@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:quizzler/question.dart';
 
 void main() => runApp(Quizzler());
 
@@ -29,25 +30,33 @@ class _QuizPageState extends State<QuizPage> {
   Icon wrongAnswerIcon = Icon(Icons.close, color: Colors.red);
 
   List<Icon> answers = [];
-  List<String> questions = [
-    'You can lead a cow down stairs but not up stairs.',
-    'Approximately one quarter of human bones are in the feet.',
-    'A slug\'s blood is green.'
-  ];
 
-  List<bool> correctAnswer = [false, true, true];
+  List<Question> questions = [
+    Question(
+      'You can lead a cow down stairs but not up stairs.',
+      false,
+    ),
+    Question(
+      'Approximately one quarter of human bones are in the feet.',
+      true,
+    ),
+    Question(
+      'A slug\'s blood is green.',
+      true,
+    ),
+  ];
 
   int questionIndex = 0;
 
   Icon getAnswerIcon(bool response) {
-    return response == correctAnswer[questionIndex]
+    return response == questions[questionIndex].correctAnswer
         ? correctAnswerIcon
         : wrongAnswerIcon;
   }
 
   void updateAnswers(bool response) {
     answers.add(getAnswerIcon(response));
-    questionIndex = (questionIndex++) % questions.length;
+    questionIndex = (questionIndex + 1) % questions.length;
   }
 
   @override
@@ -62,7 +71,7 @@ class _QuizPageState extends State<QuizPage> {
             padding: EdgeInsets.all(10.0),
             child: Center(
               child: Text(
-                questions[questionIndex],
+                questions[questionIndex].questionText,
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 25.0,
