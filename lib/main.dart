@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:quizzler/quiz_brain.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 
 QuizBrain quizBrain = new QuizBrain();
 
@@ -39,10 +40,43 @@ class _QuizPageState extends State<QuizPage> {
         : wrongAnswerIcon;
   }
 
+  void restartGame() {
+    quizBrain.restartIndex();
+    answers = [];
+  }
+
+  void displayGameOverAlert() {
+    int correctAnswerCount =
+        answers.where((element) => element == correctAnswerIcon).length;
+    int totalQuestions = quizBrain.getQuestionAmount();
+    Alert(
+      context: context,
+      title: "GAME OVER",
+      desc: "Got $correctAnswerCount correct out of $totalQuestions",
+      buttons: [
+        DialogButton(
+          child: Text(
+            "Restart",
+            style: TextStyle(color: Colors.white, fontSize: 20),
+          ),
+          onPressed: () => {
+            setState(() {
+              restartGame();
+              Navigator.pop(context);
+            })
+          },
+          color: Colors.blueAccent,
+        )
+      ],
+    ).show();
+  }
+
   void updateAnswers(bool response) {
     if (quizBrain.hasNextQuestion()) {
       answers.add(getAnswerIcon(response));
       quizBrain.nextQuestion();
+    } else {
+      this.displayGameOverAlert();
     }
   }
 

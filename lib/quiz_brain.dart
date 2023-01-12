@@ -39,6 +39,10 @@ class QuizBrain {
     return _questionBank[_questionIndex].correctAnswer;
   }
 
+  getQuestionAmount() {
+    return _questionBank.length;
+  }
+
   void nextQuestion() {
     if (this.hasNextQuestion()) {
       _questionIndex++;
@@ -46,6 +50,10 @@ class QuizBrain {
   }
 
   bool hasNextQuestion() {
-    return _questionIndex < _questionBank.length - 1;
+    return _questionIndex < this.getQuestionAmount() - 1;
+  }
+
+  void restartIndex() {
+    _questionIndex = 0;
   }
 }
